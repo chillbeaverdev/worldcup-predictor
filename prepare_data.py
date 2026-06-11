@@ -76,9 +76,20 @@ full_data = pd.merge_asof(home_rankings.sort_values('date'),
                                                           by='away_team',
                                                           direction='backward')
 
+HOSTS_2026 = ['United States', 'Mexico', 'Canada']
+
+def get_host_advantage(row):
+    if row['tournament'] == 'FIFA World Cup':
+     if row['home_team'] in HOSTS_2026:
+        return 1
+     elif row['away_team'] in HOSTS_2026:
+        return -1
+    return 0
+
+full_data['host_advantage'] = full_data.apply(get_host_advantage, axis=1)
+
 print(f' Final dataset size: {len(full_data):,}')
 print(f' Rows where rankings were found for both teams: {(full_data[["home_rank", "away_rank"]].notna()).all(axis=1).sum():,}')
-
 
 def get_result(row):
     if row['home_score'] > row['away_score']:
@@ -151,4 +162,3 @@ print(f"  Rows: {len(full_data):,}")
 print(f"  Columns: {len(output_cols)}")
 print(f"\nSample row:")
 print(full_data[output_cols].dropna().tail(3).to_string())
-
