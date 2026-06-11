@@ -80,10 +80,10 @@ HOSTS_2026 = ['United States', 'Mexico', 'Canada']
 
 def get_host_advantage(row):
     if row['tournament'] == 'FIFA World Cup':
-     if row['home_team'] in HOSTS_2026:
-        return 1
-     elif row['away_team'] in HOSTS_2026:
-        return -1
+        if row['home_team'] in HOSTS_2026:
+            return 1
+        elif row['away_team'] in HOSTS_2026:
+            return -1
     return 0
 
 full_data['host_advantage'] = full_data.apply(get_host_advantage, axis=1)
@@ -152,7 +152,7 @@ output_cols = [
     "tournament", "neutral",
     "home_rank", "away_rank", "rank_diff",
     "home_points", "away_points", "points_diff",
-    "home_form", "away_form"
+    "home_form", "away_form", "host_advantage"
 ]
  
 full_data[output_cols].to_csv("matches_with_rankings.csv", index=False)
